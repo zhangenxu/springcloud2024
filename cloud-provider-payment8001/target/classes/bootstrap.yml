@@ -1,0 +1,16 @@
+
+spring:
+  application:
+    name: cloud-payment-service
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        service-name: ${spring.application.name}
+      config:
+        profile-separator: '-' #默认是逗号分隔改成-
+        format: YAML
+        watch:
+          wait-time: 1 #官方默认生效时间为55秒，这里把配置生效时间改小
+

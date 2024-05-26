@@ -1,0 +1,20 @@
+server:
+  port: 9528
+
+spring:
+  application:
+    name: cloudalibaba-sentinel-gateway #以微服务注册进consul或nacos服务列表内
+  cloud:
+    nacos:
+      discovery:
+        serveraddr: http://211.159.166.210:8848 #配置nacos地址
+        service-name: ${spring.application.name}
+
+    gateway:
+
+      routes:
+        - id: pay_routh1
+          uri: http://localhost:9001
+          #uri: lb://nacos-payment-provider
+          predicates:
+            - Path=/pay/**

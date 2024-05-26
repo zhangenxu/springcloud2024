@@ -1,0 +1,29 @@
+server:
+  port: 8001
+
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://211.159.166.210:3306/db2024?characterEncoding-utf8&useSSL=false&serverTimezone=GMT%2B8&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true
+    username: root
+    password: Ba123456@
+  profiles:
+    active:  dev #多环境配置加载内容，不写默认为default
+
+  mybatis:
+    mapper-locations: classpath:mapper/*.xml
+    type-aliases-package: com.atguigu.cloud.entities
+    configuration:
+      map-underscore-to-camel-case: true
+
+#================zipkin================================
+#zipkin图形展现地址和采样率设置
+management:
+  zipkin:
+    tracing:
+      endpoint: http://211.159.166.210:9411/api/v2/spans
+  tracing:
+    sampling:
+      probability: 1.0 #采样率默认为0.1（0.1就是10次只能有一次被记录下来，值越大收集越及时）
+

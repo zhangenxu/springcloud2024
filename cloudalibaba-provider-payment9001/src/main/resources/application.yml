@@ -1,0 +1,49 @@
+server:
+  port: 9001
+
+spring:
+  application:
+    name: nacos-payment-provider
+  cloud:
+    nacos:
+      discovery:
+        server-addr: http://211.159.166.210:8848 #配置nacos地址
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+        #dashboard: http://211.159.166.210:8080
+        #clientIp: 211.159.166.210
+        port: 8719 #默认8197，如果被占用会涌动从8719开始一次加1扫描，直到找到未被占用的端口
+
+
+
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://211.159.166.210:3306/db2024?characterEncoding-utf8&useSSL=false&serverTimezone=GMT%2B8&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true
+    username: root
+    password: Ba123456@
+  profiles:
+    active:  dev #多环境配置加载内容，不写默认为default
+
+  mybatis:
+    mapper-locations: classpath:mapper/*.xml
+    type-aliases-package: com.atguigu.cloud.entities
+    configuration:
+      map-underscore-to-camel-case: true
+
+#================zipkin================================
+#zipkin图形展现地址和采样率设置
+management:
+  zipkin:
+    tracing:
+      endpoint: http://211.159.166.210:9411/api/v2/spans
+  tracing:
+    sampling:
+      probability: 1.0 #采样率默认为0.1（0.1就是10次只能有一次被记录下来，值越大收集越及时）
+
+
+
+
+
+

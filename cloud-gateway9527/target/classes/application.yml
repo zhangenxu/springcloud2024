@@ -1,0 +1,65 @@
+server:
+  port: 9527
+
+spring:
+  application:
+    name: cloud-gateway #以微服务注册进consul或nacos服务列表内
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        service-name: ${spring.application.name}
+    gateway:
+
+      routes:
+        - id: pay_routh1
+#          uri: http://localhost:8001
+          uri: lb://cloud-payment-service
+          predicates:
+            - Path=/pay/gateway/get/**
+            - After=2024-05-14T23:17:08.603754800+08:00[Asia/Shanghai]
+            #- Cookie=username,zzyy
+            #- Header=X-Request-Id,\d+ #请求头要有X-Request-Id属性并且值为整数的正则表达式
+            #- Host=**.atguigu.com
+            #- Query=username, \d+ #要有参数名为username的参数，并且值为整数才能路由
+            #- RemoteAddr=192.168.0.1/24 #外部访问我的ip限制，最大跨度不超过32，目前1~24它们是CIDR表示法
+            #- Method=GET,POST #访问方式限定
+            - My=diamond
+#            - name: My
+#              args:
+#                userType: diamond
+
+
+        - id: pay_routh2
+          #uri: http://localhost:8001
+          uri: lb://cloud-payment-service
+          predicates:
+            - Path=/pay/gateway/info/**
+            - After=2024-05-14T23:17:08.603754800+08:00[Asia/Shanghai]
+
+        - id: pay_routh3
+          #uri: http://localhost:8001
+          uri: lb://cloud-payment-service
+          predicates:
+            - Path=/pay/gateway/filter/** #断言默认正确路径地址
+            #- Path=/gateway/filter/** #断言默认正确路径地址
+            #- Path=/XYZ/abc/{segment} #segment被setPath取代
+          filters:
+            #- My=atguigu #自定义过滤拦截
+            #- RedirecTo=302,http://www.atguigu.com/ #访问则跳当前地址 页面重定向
+            #- PrefixPath=/pay #http://localhost:9527/pay/gateway/filter PrefixPath+path
+            #- SetPath=/pay/gateway/{segment} #segment表示占位符。你写abc也行但上下要一致
+            - AddRequestHeader=X-Request-atguigu1,atguiguValue1 #请求头kv,若一头多参则重写一行设置
+            - My=atguigu
+            #- AddRequestHeader=X-Request-atguigu2,atguiguValue2
+            #- RemoveRequestHeader=Request-atguigu2 #删除请求头
+            #- SetRequestHeader=Request-atguigu2,Blue-zzyy #修改请求头值
+            #- AddRequestParameter=customerId,9527001 #新增请求参数k v
+            #- RemoveRequestParameter=customerName #删除url请求参数
+            #- AddResponseHeader=X-Response-atguigu,BlueResponse #新增请求参数X-Response-atguigu并没有设置值为BlueResponse
+            #- SetResponseHeader=Date,2099-11-11 #设置回应头Date值
+            #- RemoveResponseHeader=Content-Type #将默认自带的Content-Type回应属性删除
+      #default-filters: 全局过滤器
+
+
