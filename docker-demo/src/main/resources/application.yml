@@ -1,2 +1,79 @@
 server:
   port: 6001
+
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://211.159.166.210:3306/db2024?characterEncoding-utf8&useSSL=false&serverTimezone=GMT%2B8&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true
+    username: root
+    password: Ba123456@
+  data:
+    redis:
+      host: 211.159.166.210
+      database: 0
+      port: 6379
+      password:
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: -1ms
+          max-idle: 8
+          min-idle: 0
+  servlet:
+    multipart:
+      max-file-size: 10MB #单个文件最大大小
+      max-request-size: 100MB #一次请求最大文件大小
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.atguigu.cloud.entities
+  configuration:
+    map-underscore-to-camel-case: true
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#fastdfs配置
+fdfs:
+  #tracker 服务器列表
+  tracker-list:
+    - 211.159.166.210:22122
+  #超时时间
+  connect-timeout: 600
+  #略缩图
+  thumb-image:
+    height: 150
+    width: 150
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    #operations-sorter: order
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'default'
+      display-name: '请输入接口进行查询'
+      paths-to-match: '/**'
+      packages-to-scan: com.atguigu.cloud
+  default-flat-param-object: true
+
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+    swagger-model-name: 实体类列表
+#  basic:
+#    enable: false
+#    username: abc
+#    password: 123
+#  insight:
+#    enable: true
+#    service-name: boot3
+#    secret: S6CsnS8AnPVyb8vvChcdXm4R3p6A6KlAISxBg3IIEgk=
+#    server: http://localhost:10086
+#    namespace: spring3
+
+#http://localhost:6001/doc.html
+
+#https://doc.xiaominfo.com/docs/quick-start
